@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "FisrtDataFactory1"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorage2lwy_connectionString": {
+			"value": ""
+		},
+		"FileServer1_password": {
+			"value": ""
+		},
+		"GoogleBigQueryForToken_clientSecret": {
+			"value": ""
+		},
+		"GoogleBigQueryForToken_refreshToken": {
+			"value": ""
+		},
+		"FileServer1_properties_typeProperties_host": {
+			"value": "C:/"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"value": "admin123"
+		},
+		"GoogleBigQueryForToken_properties_typeProperties_clientId": {
+			"value": "300837703532-f06sssljt2tlev086ji37ae68h98f6sn.apps.googleusercontent.com"
+		},
+		"trigger2_properties_typeProperties_scope": {
+			"value": "/subscriptions/1e648c5c-e503-47bb-8c2c-da9b0a9ea771/resourceGroups/mytesttwogroup/providers/Microsoft.Storage/storageAccounts/fwdddpdls01"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
