@@ -11,23 +11,6 @@
 					"variableName": "CURRENTTIME",
 					"value": "2020-08-05"
 				}
-			},
-			{
-				"name": "Set variable1_copy1",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Set variable1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "CURRENTTIME",
-					"value": "2020-08-08"
-				}
 			}
 		],
 		"variables": {
@@ -39,5 +22,6 @@
 			"name": "FormalPipeline"
 		},
 		"annotations": []
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

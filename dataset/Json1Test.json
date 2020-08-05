@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "lwy123.json",
+				"fileName": "lwy_newSQL.json",
 				"folderPath": "output",
 				"container": "fwdddp"
 			}
