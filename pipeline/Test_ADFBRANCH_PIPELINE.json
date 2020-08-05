@@ -1,0 +1,26 @@
+{
+	"name": "Test_ADFBRANCH_PIPELINE",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CURRENTTIME",
+					"value": "2020-08-05"
+				}
+			}
+		],
+		"variables": {
+			"CURRENTTIME": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "FormalPipeline"
+		},
+		"annotations": []
+	}
+}
