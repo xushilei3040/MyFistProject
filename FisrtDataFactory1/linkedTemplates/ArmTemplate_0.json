@@ -110,6 +110,23 @@
 							"variableName": "CURRENTTIME",
 							"value": "2020-08-05"
 						}
+					},
+					{
+						"name": "Set variable1_copy1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "CURRENTTIME",
+							"value": "2020-08-08"
+						}
 					}
 				],
 				"variables": {
@@ -455,7 +472,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "lwy123.json",
+						"fileName": "lwy_newSQL.json",
 						"folderPath": "output",
 						"container": "fwdddp"
 					}
