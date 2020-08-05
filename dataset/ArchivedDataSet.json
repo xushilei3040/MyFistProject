@@ -1,0 +1,41 @@
+{
+	"name": "ArchivedDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FileServer1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ArchivedDataPath": {
+				"type": "string"
+			},
+			"ArchivedDataName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "FormalDataSets"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": {
+					"value": "@dataset().ArchivedDataName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().ArchivedDataPath",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

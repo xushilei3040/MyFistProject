@@ -1,0 +1,23 @@
+{
+	"name": "Json1Test",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Test"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "lwy123.json",
+				"folderPath": "output",
+				"container": "fwdddp"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

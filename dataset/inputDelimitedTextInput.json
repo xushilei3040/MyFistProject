@@ -1,0 +1,55 @@
+{
+	"name": "inputDelimitedTextInput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SourceFilePath": {
+				"type": "string"
+			},
+			"SourceFileName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "FirstDemo"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().SourceFileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().SourceFilePath",
+					"type": "Expression"
+				},
+				"container": "demoadf"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "agency_name",
+				"type": "String"
+			},
+			{
+				"name": "activity_date",
+				"type": "String"
+			},
+			{
+				"name": "no_of_contacts",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

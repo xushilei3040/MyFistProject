@@ -1,0 +1,92 @@
+{
+	"name": "pipeline4",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CurrentTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "GoogleBigQuerySource",
+						"query": "SELECT * FROM `firstprojectlwy.analytics_240895117.events_20200731`"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"path": "demoadf/output"
+					},
+					"validateDataConsistency": true
+				},
+				"inputs": [
+					{
+						"referenceName": "GoogleBigQueryInput",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Parquet2Test",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "CurrentTime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentTime",
+					"value": {
+						"value": "@string(formatDateTime(utcnow(),'yyyy-MM-dd'))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"DestionFilePath": {
+				"type": "string",
+				"defaultValue": "output"
+			},
+			"DestionFileName": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"CurrentTime": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "demo"
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,67 @@
+{
+	"name": "GoogleBigQueryOutPut",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"DestionFilePath": {
+				"type": "string"
+			},
+			"DestionFileName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "BiqueryDemo"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().DestionFileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().DestionFilePath",
+					"type": "Expression"
+				},
+				"container": "fwdddp"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "",
+			"firstRowAsHeader": true,
+			"quoteChar": ""
+		},
+		"schema": [
+			{
+				"name": "activity_date",
+				"type": "String"
+			},
+			{
+				"name": "no_of_contacts",
+				"type": "String"
+			},
+			{
+				"name": "dw_source_name",
+				"type": "String"
+			},
+			{
+				"name": "dw_batch_num",
+				"type": "String"
+			},
+			{
+				"name": "dw_create_time",
+				"type": "String"
+			},
+			{
+				"name": "agency_name",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

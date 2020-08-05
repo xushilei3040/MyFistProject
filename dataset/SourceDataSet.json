@@ -1,0 +1,54 @@
+{
+	"name": "SourceDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FileServer1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SourceDataPath": {
+				"type": "string"
+			},
+			"SourceDataName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "FormalDataSets"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": {
+					"value": "@dataset().SourceDataName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().SourceDataPath",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "agency_name",
+				"type": "String"
+			},
+			{
+				"name": "activity_type",
+				"type": "String"
+			},
+			{
+				"name": "act_date",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

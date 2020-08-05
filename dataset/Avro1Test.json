@@ -1,0 +1,23 @@
+{
+	"name": "Avro1Test",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Test"
+		},
+		"annotations": [],
+		"type": "Avro",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "avro123.avro",
+				"folderPath": "output",
+				"container": "fwdddp"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,41 @@
+{
+	"name": "Logger",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FileServer1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"LogPath": {
+				"type": "string"
+			},
+			"LogName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "FormalDataSets/Log"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": {
+					"value": "@dataset().LogName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().LogPath",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

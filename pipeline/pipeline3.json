@@ -1,0 +1,262 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"activities": [
+			{
+				"name": "CurrentTime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentTime",
+					"value": {
+						"value": "@string(formatDateTime(utcnow(),'yyyy-MM-dd'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "GetEventKey",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "CurrentTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "GoogleBigQuerySource",
+						"query": "select distinct key from (\nSELECT event_date,event_timestamp,event_name,event_params.key as key,concat((case when event_params.value.string_value is null then '' else event_params.value.string_value end),(case when cast(event_params.value.int_value as string) is null then '' else cast(event_params.value.int_value as string) end),(case when cast(event_params.value.float_value as string) is null then '' else cast(event_params.value.float_value as string) end),(case when cast(event_params.value.double_value as string) is null then '' else cast(event_params.value.double_value as string) end)) as value FROM `firebase-public-project.analytics_153293282.events_20181003` , unnest(event_params) as event_params \n) "
+					},
+					"dataset": {
+						"referenceName": "GoogleBigQueryInput",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Set variable EventKey",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetEventKey",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "EventKey",
+					"value": {
+						"value": "@activity('GetEventKey').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set variable EventKey",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('EventKey')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "SqlTwo",
+								"value": {
+									"value": "@concat(variables('TempSql'),'  max((case when key=\"',item().key,'\"  then value else null end) ) as \n ',item().key,' , ')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set variable1_copy1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempSql",
+								"value": {
+									"value": "@variables('SqlTwo')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FinallSql",
+					"value": {
+						"value": "@concat(variables('SqlOne') , variables('SqlTwo') , variables('SqlThree'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "GoogleBigQuerySource",
+						"query": {
+							"value": "@variables('FinallSql')",
+							"type": "Expression"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "GoogleBigQueryInput",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "inputDelimitedTextoutput",
+						"type": "DatasetReference",
+						"parameters": {
+							"DestionFilePath": {
+								"value": "@pipeline().parameters.DestionFilePath",
+								"type": "Expression"
+							},
+							"DestionFileName": {
+								"value": "@pipeline().parameters.DestionFileName",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"DestionFilePath": {
+				"type": "string",
+				"defaultValue": "output"
+			},
+			"DestionFileName": {
+				"type": "string",
+				"defaultValue": "testdemofinall.csv"
+			}
+		},
+		"variables": {
+			"CurrentTime": {
+				"type": "String"
+			},
+			"EventKey": {
+				"type": "Array"
+			},
+			"BigQuerySqlForFormalData": {
+				"type": "String"
+			},
+			"TempSql": {
+				"type": "String",
+				"defaultValue": "   "
+			},
+			"SqlOne": {
+				"type": "String",
+				"defaultValue": "select event_date,event_timestamp,event_name, "
+			},
+			"SqlTwo": {
+				"type": "String",
+				"defaultValue": "    "
+			},
+			"SqlThree": {
+				"type": "String",
+				"defaultValue": "max((case when key='value' then value else null end) ) as value111   from( SELECT event_date,event_timestamp,event_name  ,event_params.key as key,concat((case when event_params.value.string_value is null then '' else event_params.value.string_value end),(case when cast(event_params.value.int_value as string) is null then '' else cast(event_params.value.int_value as string) end),(case when cast(event_params.value.float_value as string) is null then '' else cast(event_params.value.float_value as string) end),(case when cast(event_params.value.double_value as string) is null then '' else cast(event_params.value.double_value as string) end)) as value FROM `firebase-public-project.analytics_153293282.events_20181003` , unnest(event_params) as event_params  )  group by event_date,event_timestamp,event_name"
+			},
+			"FinallSql": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "demo"
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

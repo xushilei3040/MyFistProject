@@ -1,0 +1,20 @@
+{
+	"name": "GoogleBigQueryInput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "GoogleBigQueryForToken",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "BiqueryDemo"
+		},
+		"annotations": [],
+		"type": "GoogleBigQueryObject",
+		"schema": [],
+		"typeProperties": {
+			"dataset": "FirstDataSetDemo",
+			"table": "FirstTableDemo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

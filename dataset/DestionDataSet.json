@@ -1,0 +1,42 @@
+{
+	"name": "DestionDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"DestionDataName": {
+				"type": "string"
+			},
+			"DestionDataPath": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "FormalDataSets"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().DestionDataName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().DestionDataPath",
+					"type": "Expression"
+				},
+				"container": "fwdddp"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

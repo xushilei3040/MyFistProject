@@ -1,0 +1,1462 @@
+{
+	"name": "FWD_BIGQUERY_DATA_PIPELINE",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "GET BIGQUERY DATA COUNT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "GoogleBigQuerySource",
+						"additionalColumns": [
+							{
+								"name": "dw_table_name",
+								"value": "FirstTableDemo"
+							},
+							{
+								"name": "dw_batch_num",
+								"value": {
+									"value": "@formatDateTime(utcnow(),'yyyyMMddHHmmss')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "dw_create_time",
+								"value": {
+									"value": "@formatDateTime(utcnow(),'yyyy-MM-dd')",
+									"type": "Expression"
+								}
+							}
+						],
+						"query": "SELECT * FROM `firebase-public-project.analytics_153293282.events_20181003`"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "event_date"
+								},
+								"sink": {
+									"name": "event_date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "event_timestamp",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "event_timestamp",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "event_name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "event_name",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "event_params",
+									"type": "String"
+								},
+								"sink": {
+									"name": "event_params",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "event_previous_timestamp",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "event_previous_timestamp",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "event_value_in_usd",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "event_value_in_usd",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "event_bundle_sequence_id",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "event_bundle_sequence_id",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "event_server_timestamp_offset",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "event_server_timestamp_offset",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "user_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "user_id",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "user_pseudo_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "user_pseudo_id",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "user_properties",
+									"type": "String"
+								},
+								"sink": {
+									"name": "user_properties",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "user_first_touch_timestamp",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "user_first_touch_timestamp",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "user_ltv",
+									"type": "String"
+								},
+								"sink": {
+									"name": "user_ltv",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "device",
+									"type": "String"
+								},
+								"sink": {
+									"name": "device",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "geo",
+									"type": "String"
+								},
+								"sink": {
+									"name": "geo",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "app_info",
+									"type": "String"
+								},
+								"sink": {
+									"name": "app_info",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "traffic_source",
+									"type": "String"
+								},
+								"sink": {
+									"name": "traffic_source",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "stream_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "stream_id",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "platform",
+									"type": "String"
+								},
+								"sink": {
+									"name": "platform",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "event_dimensions",
+									"type": "String"
+								},
+								"sink": {
+									"name": "event_dimensions",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "GoogleBigQueryInput",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestionDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"DestionDataName": {
+								"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+								"type": "Expression"
+							},
+							"DestionDataPath": "UnValidated"
+						}
+					}
+				]
+			},
+			{
+				"name": "CurrentTime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentTime",
+					"value": {
+						"value": "@string(formatDateTime(utcnow(),'yyyy-MM-dd'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "GET BIGQUERY DATA COUNT",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "CurrentTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "GoogleBigQuerySource",
+						"query": "SELECT COUNT(1) FROM `firebase-public-project.analytics_153293282.events_20181003`"
+					},
+					"dataset": {
+						"referenceName": "GoogleBigQueryInput",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(string(activity('GET BIGQUERY DATA COUNT').output.value[0].f0_) , string(activity('Copy data1').output.rowsCopied))",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "ERROR UNVALIDATED TO VALIDATED",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "FileServerWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"enableSkipIncompatibleRow": false,
+								"logStorageSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureBlobStorage1",
+										"type": "LinkedServiceReference"
+									},
+									"path": "demoadf/log"
+								},
+								"validateDataConsistency": true,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DestionDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"DestionDataName": {
+											"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+											"type": "Expression"
+										},
+										"DestionDataPath": "UnValidated"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ErrorDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"ErrorDataPath": {
+											"value": "@pipeline().parameters.ErrorDataPath",
+											"type": "Expression"
+										},
+										"ErrorDataName": {
+											"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "WRITE LOG_copy1",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "ERROR UNVALIDATED TO VALIDATED",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"additionalColumns": [
+										{
+											"name": "ActivityName",
+											"value": "if Condition1"
+										},
+										{
+											"name": "PiplineName",
+											"value": "FWD_BIGQUERY_DATA_PIPELINE"
+										},
+										{
+											"name": "Date",
+											"value": {
+												"value": "@formatDateTime(utcnow(),'yyyy-MM-dd')",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "Timestampse",
+											"value": {
+												"value": "@formatDateTime(utcnow(),'yyyyMMddHHmmss')",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "ErrorCode",
+											"value": "9000"
+										},
+										{
+											"name": "Message",
+											"value": "BigQuery中数据量与写入的目标文件不一致"
+										},
+										{
+											"name": "status",
+											"value": "Failed"
+										}
+									],
+									"storeSettings": {
+										"type": "FileServerReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "FileServerWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".csv"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "ActivityName",
+												"type": "String"
+											},
+											"sink": {
+												"name": "ActivityName"
+											}
+										},
+										{
+											"source": {
+												"name": "PiplineName",
+												"type": "String"
+											},
+											"sink": {
+												"name": "PiplineName"
+											}
+										},
+										{
+											"source": {
+												"name": "Date",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Date"
+											}
+										},
+										{
+											"source": {
+												"name": "Timestampse",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Timestampse"
+											}
+										},
+										{
+											"source": {
+												"name": "ErrorCode",
+												"type": "String"
+											},
+											"sink": {
+												"name": "ErrorCode"
+											}
+										},
+										{
+											"source": {
+												"name": "Message",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Message"
+											}
+										},
+										{
+											"source": {
+												"name": "status",
+												"type": "String"
+											},
+											"sink": {
+												"name": "status"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "dummp",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Logger",
+									"type": "DatasetReference",
+									"parameters": {
+										"LogPath": {
+											"value": "@pipeline().parameters.LogPath",
+											"type": "Expression"
+										},
+										"LogName": {
+											"value": "@concat(pipeline().parameters.LogName,formatDateTime(utcnow(),'yyyyMMddHHmmss'),'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "DELETE2_copy1",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "WRITE LOG_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "DestionDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"DestionDataName": {
+											"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+											"type": "Expression"
+										},
+										"DestionDataPath": "UnValidated"
+									}
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "UNVALIDATED TO VALIDATED",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"additionalColumns": [
+										{
+											"name": "dw_table_name",
+											"value": "FirstTableDemo"
+										},
+										{
+											"name": "dw_batch_num",
+											"value": {
+												"value": "@formatDateTime(utcnow(),'yyyyMMddHHmmss')",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "dw_create_time",
+											"value": {
+												"value": "@formatDateTime(utcnow(),'yyyy-MM-dd')",
+												"type": "Expression"
+											}
+										}
+									],
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "event_date",
+												"type": "String"
+											},
+											"sink": {
+												"name": "event_date",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "event_timestamp",
+												"type": "Int64"
+											},
+											"sink": {
+												"name": "event_timestamp",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "event_name",
+												"type": "String"
+											},
+											"sink": {
+												"name": "event_name",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "event_params",
+												"type": "String"
+											},
+											"sink": {
+												"name": "event_params",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "event_previous_timestamp",
+												"type": "Int64"
+											},
+											"sink": {
+												"name": "event_previous_timestamp",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "event_value_in_usd",
+												"type": "Double"
+											},
+											"sink": {
+												"name": "event_value_in_usd",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "event_bundle_sequence_id",
+												"type": "Int64"
+											},
+											"sink": {
+												"name": "event_bundle_sequence_id",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "event_server_timestamp_offset",
+												"type": "Int64"
+											},
+											"sink": {
+												"name": "event_server_timestamp_offset",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "user_id",
+												"type": "String"
+											},
+											"sink": {
+												"name": "user_id",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "user_pseudo_id",
+												"type": "String"
+											},
+											"sink": {
+												"name": "user_pseudo_id",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "user_properties",
+												"type": "String"
+											},
+											"sink": {
+												"name": "user_properties",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "user_first_touch_timestamp",
+												"type": "Int64"
+											},
+											"sink": {
+												"name": "user_first_touch_timestamp",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "user_ltv",
+												"type": "String"
+											},
+											"sink": {
+												"name": "user_ltv",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "device",
+												"type": "String"
+											},
+											"sink": {
+												"name": "device",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "geo",
+												"type": "String"
+											},
+											"sink": {
+												"name": "geo",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "app_info",
+												"type": "String"
+											},
+											"sink": {
+												"name": "app_info",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "traffic_source",
+												"type": "String"
+											},
+											"sink": {
+												"name": "traffic_source",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "stream_id",
+												"type": "String"
+											},
+											"sink": {
+												"name": "stream_id",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "platform",
+												"type": "String"
+											},
+											"sink": {
+												"name": "platform",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "event_dimensions",
+												"type": "String"
+											},
+											"sink": {
+												"name": "event_dimensions",
+												"type": "String",
+												"physicalType": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DestionDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"DestionDataName": {
+											"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+											"type": "Expression"
+										},
+										"DestionDataPath": "UnValidated"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestionDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"DestionDataName": {
+											"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+											"type": "Expression"
+										},
+										"DestionDataPath": "Validated"
+									}
+								}
+							]
+						},
+						{
+							"name": "ARCHIVED",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "UNVALIDATED TO VALIDATED",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "FileServerWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"enableSkipIncompatibleRow": false,
+								"logStorageSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureBlobStorage1",
+										"type": "LinkedServiceReference"
+									},
+									"path": "demoadf/log"
+								},
+								"validateDataConsistency": true,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DestionDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"DestionDataName": {
+											"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+											"type": "Expression"
+										},
+										"DestionDataPath": "UnValidated"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ArchivedDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"ArchivedDataPath": "DATA\\PH\\FWD\\BIGQUERY\\ARCHIVED",
+										"ArchivedDataName": {
+											"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "DELETE2",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "ARCHIVED",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "DestionDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"DestionDataName": {
+											"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+											"type": "Expression"
+										},
+										"DestionDataPath": "UnValidated"
+									}
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "ERROR BAK",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "GoogleBigQuerySource",
+						"additionalColumns": [
+							{
+								"name": "dw_table_name",
+								"value": "FirstTableDemo"
+							},
+							{
+								"name": "dw_batch_num",
+								"value": {
+									"value": "@formatDateTime(utcnow(),'yyyyMMddHHmmss')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "dw_create_time",
+								"value": {
+									"value": "@formatDateTime(utcnow(),'yyyy-MM-dd')",
+									"type": "Expression"
+								}
+							}
+						],
+						"query": "SELECT * FROM `firebase-public-project.analytics_153293282.events_20181003`"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "FileServerWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "GoogleBigQueryInput",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ErrorDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"ErrorDataPath": {
+								"value": "@pipeline().parameters.ErrorDataPath",
+								"type": "Expression"
+							},
+							"ErrorDataName": {
+								"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "WRITE LOG",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "ActivityName",
+								"value": {
+									"value": "Copy data1",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "PiplineName",
+								"value": "FWD_BIGQUERY_DATA_PIPELINE"
+							},
+							{
+								"name": "Date",
+								"value": {
+									"value": "@formatDateTime(utcnow(),'yyyy-MM-dd')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "Timestampse",
+								"value": {
+									"value": "@formatDateTime(utcnow(),'yyyyMMddHHmmss')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "ErrorCode",
+								"value": {
+									"value": "@activity('Copy data1').output.errors[0].Code",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "Message",
+								"value": {
+									"value": "@activity('Copy data1').output.errors[0].Message",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "status",
+								"value": "Failed"
+							}
+						],
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "FileServerWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ActivityName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ActivityName"
+								}
+							},
+							{
+								"source": {
+									"name": "PiplineName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "PiplineName"
+								}
+							},
+							{
+								"source": {
+									"name": "Date",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Date"
+								}
+							},
+							{
+								"source": {
+									"name": "Timestampse",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Timestampse"
+								}
+							},
+							{
+								"source": {
+									"name": "ErrorCode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ErrorCode"
+								}
+							},
+							{
+								"source": {
+									"name": "Message",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Message"
+								}
+							},
+							{
+								"source": {
+									"name": "status",
+									"type": "String"
+								},
+								"sink": {
+									"name": "status"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "dummp",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Logger",
+						"type": "DatasetReference",
+						"parameters": {
+							"LogPath": {
+								"value": "@pipeline().parameters.LogPath",
+								"type": "Expression"
+							},
+							"LogName": {
+								"value": "@concat(pipeline().parameters.LogName,formatDateTime(utcnow(),'yyyyMMddHHmmss'),'.csv')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "DELETE1",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "ERROR BAK",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DestionDataSet",
+						"type": "DatasetReference",
+						"parameters": {
+							"DestionDataName": {
+								"value": "@concat(pipeline().parameters.DestionFileName,variables('CurrentTime'),'.csv')",
+								"type": "Expression"
+							},
+							"DestionDataPath": "UnValidated"
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true
+					}
+				}
+			}
+		],
+		"parameters": {
+			"DestionFilePath": {
+				"type": "string"
+			},
+			"DestionFileName": {
+				"type": "string",
+				"defaultValue": "BigQueryFile"
+			},
+			"ErrorDataPath": {
+				"type": "string",
+				"defaultValue": "DATA\\PH\\FWD\\BIGQUERY\\ERROR"
+			},
+			"ErrorDataName": {
+				"type": "string",
+				"defaultValue": "BigQueryFile"
+			},
+			"LogPath": {
+				"type": "string",
+				"defaultValue": "DATA\\PH\\FWD\\LOG\\BIGQUERYLOG"
+			},
+			"LogName": {
+				"type": "string",
+				"defaultValue": "FWD_BIGQUERY_DATA_"
+			}
+		},
+		"variables": {
+			"CurrentTime": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "FormalPipeline"
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
