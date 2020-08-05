@@ -1,5 +1,5 @@
 {
-	"name": "Test_ADFBRANCH_PIPELINE",
+	"name": "Test_ADFBRANCH_PIPELINE2",
 	"properties": {
 		"activities": [
 			{
@@ -17,23 +17,6 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set variable1_copy2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "CURRENTTIME",
-					"value": "2020-08-07"
-				}
-			},
-			{
-				"name": "Set variable1_copy2",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
 						"activity": "Set variable1",
 						"dependencyConditions": [
 							"Succeeded"
@@ -43,7 +26,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "CURRENTTIME",
-					"value": "2020-08-06"
+					"value": "2020-08-08"
 				}
 			}
 		],
